@@ -78,6 +78,10 @@ public class InventoryController {
 
     }
 
+    /**
+     * TO-DO:
+     * - Create model of rental
+     * - delete any records of rental associating with inventory*/
     @DeleteMapping("/{id}")
     public void removeItemFromInventory(@PathVariable int id) {
         Inventory inventory = inventoryRepository.findById(id).orElseThrow(() ->
