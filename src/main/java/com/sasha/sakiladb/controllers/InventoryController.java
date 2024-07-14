@@ -1,16 +1,13 @@
 package com.sasha.sakiladb.controllers;
 
-import com.sasha.sakiladb.entities.Actor;
-import com.sasha.sakiladb.entities.Film;
 import com.sasha.sakiladb.entities.Inventory;
-import com.sasha.sakiladb.input.ActorInput;
+import com.sasha.sakiladb.entities.Rental;
 import com.sasha.sakiladb.input.InventoryFormInput;
 import com.sasha.sakiladb.input.InventoryInput;
 import com.sasha.sakiladb.input.ValidationGroup;
-import com.sasha.sakiladb.output.ActorResponse;
-import com.sasha.sakiladb.output.FilmResponse;
 import com.sasha.sakiladb.output.InventoryResponse;
 import com.sasha.sakiladb.repository.InventoryRepository;
+import com.sasha.sakiladb.repository.RentalRepository;
 import com.sasha.sakiladb.services.ActorService;
 import com.sasha.sakiladb.services.InventoryServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +23,16 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/inventory")
+@CrossOrigin("*")
 public class InventoryController {
     @Autowired
     private InventoryRepository inventoryRepository;
 
     @Autowired
     private InventoryServices inventoryServices;
+
+    @Autowired
+    private RentalRepository rentalRepository;
 
 
     @GetMapping("/{id}")
@@ -48,7 +49,6 @@ public class InventoryController {
 
     @GetMapping
     public List<InventoryResponse> getLocations(@RequestParam(required=false) Optional<String> name){
-
         return name.map(value -> inventoryServices.findByName(value))
                 .orElseGet(() -> inventoryServices.findAll())
                 .stream()
@@ -84,6 +84,7 @@ public class InventoryController {
      * - delete any records of rental associating with inventory*/
     @DeleteMapping("/{id}")
     public void removeItemFromInventory(@PathVariable int id) {
+        //Rental rental = rentalRepository.findByInventoryId(Id)
         Inventory inventory = inventoryRepository.findById(id).orElseThrow(() ->
                 new ResponseStatusException(
                         HttpStatus.NOT_FOUND,

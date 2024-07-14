@@ -20,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/actors")
+@CrossOrigin("*")
 public class ActorController {
 
     @Autowired

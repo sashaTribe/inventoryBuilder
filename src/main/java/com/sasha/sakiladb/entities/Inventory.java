@@ -4,8 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity
 @Table(name="inventory")
@@ -25,6 +26,9 @@ public class Inventory {
     @ManyToOne
     @JoinColumn(name="store_id")
     private Store store;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="inventory")
+    private List<Rental> rentals = new ArrayList<>();
 
 
 }

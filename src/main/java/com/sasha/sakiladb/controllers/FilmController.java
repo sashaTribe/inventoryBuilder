@@ -22,6 +22,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/films")
+@CrossOrigin("*")
 public class FilmController {
 
     @Autowired

@@ -10,7 +10,7 @@ public class FilmInput {
     @Size(min=1, max=80)
     private String filmName;
 
-    /*
+
     private int releaseYear;
 
     private Short rentalDuration;
@@ -19,7 +19,7 @@ public class FilmInput {
 
     private String specialFeatures;
 
-     */
+
 
     @NotNull(groups={ValidationGroup.Create.class})
     private Byte languageId;
