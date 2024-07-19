@@ -1,15 +1,20 @@
 package com.sasha.sakiladb.output;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sasha.sakiladb.entities.Address;
 import com.sasha.sakiladb.entities.Inventory;
 import com.sasha.sakiladb.entities.Store;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Getter
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class StoreResponse {
     private final Short id;
@@ -18,7 +23,7 @@ public class StoreResponse {
     private final String city;
     private final String country;
 
-
+    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public StoreResponse(Store store){
         this.id = store.getId();
         this.filmStock = store.getInventoryLocations().stream().count();

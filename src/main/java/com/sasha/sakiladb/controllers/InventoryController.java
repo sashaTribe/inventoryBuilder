@@ -36,7 +36,7 @@ public class InventoryController {
 
 
     @GetMapping("/{id}")
-    public InventoryResponse getInventoryById(@RequestBody int id) {
+    public InventoryResponse getInventoryById(@RequestBody Long id) {
         return this.inventoryRepository.findById(id)
                 .map(InventoryResponse::new)
                 .orElseThrow(() ->
@@ -69,10 +69,11 @@ public class InventoryController {
     public InventoryResponse addToInventory(@Validated(ValidationGroup.Create.class) @RequestBody InventoryFormInput data){
         Inventory created = inventoryServices.addToInventory(data);
         return new InventoryResponse(created);
+        //sasha smells
     }
 
     @PatchMapping("/{id}")
-    public InventoryResponse editInventory(@PathVariable int id, @RequestBody InventoryFormInput data){
+    public InventoryResponse editInventory(@PathVariable Long id, @RequestBody InventoryFormInput data){
         Inventory created = inventoryServices.editInventory(id, data);
         return new InventoryResponse(created);
 
@@ -83,7 +84,7 @@ public class InventoryController {
      * - Create model of rental
      * - delete any records of rental associating with inventory*/
     @DeleteMapping("/{id}")
-    public void removeItemFromInventory(@PathVariable int id) {
+    public void removeItemFromInventory(@PathVariable Long id) {
         //Rental rental = rentalRepository.findByInventoryId(Id)
         Inventory inventory = inventoryRepository.findById(id).orElseThrow(() ->
                 new ResponseStatusException(

@@ -15,7 +15,8 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @Service
-public class InventoryServices {
+public class
+InventoryServices {
 
     @Autowired
     InventoryRepository inventoryRepository;
@@ -49,11 +50,11 @@ public class InventoryServices {
             Store store = storeRepository.findById(data.getStoreId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
             inventory.setStore(store);
         }
-        Inventory created = inventory;
+        Inventory created = inventoryRepository.save(inventory);
         return created;
     }
 
-    public Inventory editInventory(int id, InventoryFormInput data){
+    public Inventory editInventory(Long id, InventoryFormInput data){
         Inventory inventory = inventoryRepository.findById(id).orElseThrow(() ->
                 new ResponseStatusException(
                         HttpStatus.NOT_FOUND,

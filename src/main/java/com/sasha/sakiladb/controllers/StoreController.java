@@ -33,6 +33,7 @@ public class StoreController {
 
     @GetMapping("/{id}")
     public StoreResponse getStoreById(@PathVariable Short id) {
+        System.out.println("Hello this is my id" + id);
         return this.storeRepository.findById(id)
                 .map(StoreResponse::new)
                 .orElseThrow(() ->

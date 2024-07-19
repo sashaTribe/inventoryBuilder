@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface InventoryRepository extends JpaRepository<Inventory, Integer> {
+public interface InventoryRepository extends JpaRepository<Inventory, Long> {
     List<Inventory> findByFilmFilmNameContainingIgnoreCase(String name);
 
     //@Query("SELECT COUNT(film_id,store_id) FROM inventory ")
