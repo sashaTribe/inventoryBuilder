@@ -17,10 +17,15 @@ import java.util.Set;
 @Getter
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class StoreResponse {
+    @JsonProperty("id")
     private final Short id;
+    @JsonProperty("filmStock")
     private final long filmStock;
+    @JsonProperty("address")
     private final String address;
+    @JsonProperty("city")
     private final String city;
+    @JsonProperty("country")
     private final String country;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)

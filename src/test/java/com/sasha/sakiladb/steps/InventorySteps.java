@@ -1,12 +1,14 @@
 package com.sasha.sakiladb.steps;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sasha.sakiladb.input.InventoryFormInput;
 import com.sasha.sakiladb.input.InventoryInput;
 import com.sasha.sakiladb.output.InventoryResponse;
 import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
@@ -17,7 +19,18 @@ import io.cucumber.java.en.When;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.net.URI;
+import java.net.URLEncoder;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
+
 
 public class InventorySteps {
 
@@ -26,10 +39,11 @@ public class InventorySteps {
     private Short storeId;
     private RestTemplate restTemplate;
     private InventoryFormInput inventory;
-    private int inventoryId;
+    private Long inventoryId;
     private String filmName;
     private String address;
-    ResponseEntity<String> response;
+    private ResponseEntity<String> response;
+    private TestRestTemplate template;
 
 
     @Given("the film id is {int} and the storeId is {int}")
@@ -40,18 +54,37 @@ public class InventorySteps {
     }
 
     @When("I send a POST request to {string}")
-    public void when_i_send_a_post_request_to(String endpoint) {
-        restTemplate = new RestTemplate();
+    public void when_i_send_a_post_request_to(String endpoint) throws IOException, InterruptedException {
+        String main_url = "http://localhost:8080" + endpoint;
+        template = new TestRestTemplate();
+        ObjectMapper mapper = new ObjectMapper();
+
         InventoryFormInput inventoryInput = new InventoryFormInput();
         inventoryInput.setStoreId(storeId);
         inventoryInput.setFilmId(filmId);
-        String main_url = "http://localhost:8080" + endpoint;
+
+
+        response = template.postForEntity(main_url, inventoryInput, String.class);
+        //System.out.println(response.body());
+        String stringResponse = response.getBody().toString();
+        JsonNode rootNode = mapper.readTree(stringResponse);
+        inventoryId = rootNode.get("id").longValue();
+        filmName = rootNode.get("filmName").asText();
+        address = rootNode.get("address").asText();
+
+        //HttpResponse response = client.send(request, BodyHandler.asFile(Paths.get("/path")));
+        //Path body = response.body();
+
+
+
         //String main_url = url + endpoint;
-        HttpEntity<InventoryFormInput> request = new HttpEntity<>(inventoryInput);
-        response = restTemplate.postForEntity(main_url, request, String.class);
+       // HttpEntity<InventoryFormInput> request = new HttpEntity<>(inventoryInput);
+
         //System.out.println(response.getBody());
     }
 
+
+    /*
 
     @Before
     public void set_values() throws IOException {
@@ -62,6 +95,8 @@ public class InventorySteps {
         address = inventoryResponse.getAddress();
 
     }
+
+     */
 
     @Then("the status code should be {int}")
     public void the_status_code_should_be(int status) throws IOException {
@@ -86,7 +121,22 @@ public class InventorySteps {
         Assertions.assertEquals(name, address);
     }
 
+/*
+    HttpClient client = HttpClient
+            .newBuilder()
+            .build();
 
+    HttpRequest request = HttpRequest
+            .newBuilder(new URI("http://www.foo.com/"))
+            .POST(BodyProcessor.fromString("Hello world"))
+            .build();
+
+    HttpResponse<Path> response =
+            client.send(request, BodyHandler.asFile(Paths.get("/path")));
+
+    Path body = response.body();
+
+ */
 
 
 

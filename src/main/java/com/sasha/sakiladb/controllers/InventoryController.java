@@ -64,7 +64,7 @@ public class InventoryController {
                 + " copies left in store " + data.getStoreId() ;
     }
 
-    @PostMapping
+    @PostMapping(value = "/", consumes = {"*/*"})
     @ResponseStatus(HttpStatus.CREATED)
     public InventoryResponse addToInventory(@Validated(ValidationGroup.Create.class) @RequestBody InventoryFormInput data){
         Inventory created = inventoryServices.addToInventory(data);
