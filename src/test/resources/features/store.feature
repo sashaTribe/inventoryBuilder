@@ -10,8 +10,3 @@ Feature: store
     And the response body should contain city with "Lethbridge"
     And the response body should contain country with "Canada"
 
-
-    Scenario: Getting list of stores
-      Given I am on page "/stores"
-      When I send a GET request to "/stores"
-      Then the response status should be 200

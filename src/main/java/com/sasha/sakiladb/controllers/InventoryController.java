@@ -22,7 +22,7 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping("/inventory")
+@RequestMapping(value ="/inventory")
 @CrossOrigin("*")
 public class InventoryController {
     @Autowired
@@ -64,12 +64,11 @@ public class InventoryController {
                 + " copies left in store " + data.getStoreId() ;
     }
 
-    @PostMapping(value = "/", consumes = {"*/*"})
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public InventoryResponse addToInventory(@Validated(ValidationGroup.Create.class) @RequestBody InventoryFormInput data){
         Inventory created = inventoryServices.addToInventory(data);
         return new InventoryResponse(created);
-        //sasha smells
     }
 
     @PatchMapping("/{id}")

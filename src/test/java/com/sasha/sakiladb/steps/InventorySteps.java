@@ -65,7 +65,7 @@ public class InventorySteps {
 
 
         response = template.postForEntity(main_url, inventoryInput, String.class);
-        //System.out.println(response.body());
+        System.out.println(response.getBody());
         String stringResponse = response.getBody().toString();
         JsonNode rootNode = mapper.readTree(stringResponse);
         inventoryId = rootNode.get("id").longValue();
